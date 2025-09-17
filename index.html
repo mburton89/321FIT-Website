@@ -1,20 +1,24 @@
+---
+---
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>321FIT Coach Portal</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You Are Super Human - 321FIT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
-  <h1>Coach Portal</h1>
-  <div id="login-status"></div>
-  <button id="login-btn">Log In</button>
-  <div id="workout-form" style="display:none;">
-    <input id="workout-title" placeholder="Workout Title">
-    <input id="client-id" placeholder="Client ID">
-    <button onclick="queueWorkout()">Queue Workout</button>
-  </div>
-  <script src="assets/js/app.js"></script>
+  {% include header.html %}
+  <main>
+    <h1>You Are Super Human</h1>
+    <p>
+      By nature, we are all superhuman. Deep within us lies incredible potential—strength, resilience, and power waiting to be unleashed. But the distractions of the modern world—endless screens, noise, and chaos—have buried this truth. At 321FIT, we believe in stripping away those distractions to help you rediscover your inner strength. Join us to unlock your true potential and become the superhuman you were always meant to be.
+    </p>
+    <button id="cta-button">Start Your Journey</button>
+  </main>
+  <canvas id="lightning-canvas" width="800" height="600"></canvas>
+  <script src="/assets/js/lightning.js"></script>
 </body>
 </html>
