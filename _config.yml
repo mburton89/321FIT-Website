@@ -1,2 +1,5 @@
 title: 321FIT Coach Portal
+description: A portal for coaches to manage workouts for clients, with a retro terminal and lightning theme
 theme: jekyll-theme-minimal
+baseurl: ""
+url: "https://username.github.io" # Replace with your GitHub Pages URL
