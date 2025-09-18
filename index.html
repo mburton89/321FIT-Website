@@ -7,10 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>You Are Super Human - 321FIT</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  {% include header.html %}
+  <header>
+    <div class="header-left">
+      <img src="assets/images/logo.png" alt="321FIT Logo" class="logo">
+      <h2>Become Superhuman</h2>
+    </div>
+    <nav class="header-right">
+      <a href="/">Home</a>
+      <a href="/321fit.html">321FIT</a>
+      <a href="/coaches.html">Coaches</a>
+    </nav>
+  </header>
   <main>
     <h1>You Are Super Human</h1>
     <p>
@@ -19,6 +29,6 @@
     <button id="cta-button">Start Your Journey</button>
   </main>
   <canvas id="lightning-canvas" width="800" height="600"></canvas>
-  <script src="/assets/js/lightning.js"></script>
+  <script src="assets/js/lightning.js"></script>
 </body>
-</html>
+</html> 

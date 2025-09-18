@@ -1,7 +1,16 @@
-const canvas = document.getElementById('lightning-canvas');
+// Ensure canvas exists
+let canvas = document.getElementById('lightning-canvas');
+if (!canvas) {
+  console.warn('Canvas element not found, creating one');
+  canvas = document.createElement('canvas');
+  canvas.id = 'lightning-canvas';
+  canvas.width = 800;
+  canvas.height = 600;
+  document.body.appendChild(canvas);
+}
 const ctx = canvas.getContext('2d');
 
-// Adjust canvas size to window
+// Set canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const W = canvas.width;
@@ -17,13 +26,20 @@ const SEG_MAX_LEN = 30;
 const MAX_KINK = 2;
 const KINK_CHANCE = 0.1;
 
-// Frame buffer and bolt list
-const buffer = new Float32Array(W * H);
+// Frame buffer and bolt/flash lists
+let buffer = new Float32Array(W * H);
 let activeBolts = [];
+let activeFlashes = [];
+let hasInteracted = false; // Track user interaction for audio
 
-// Thunder sound (optional, add your own audio file)
-const thunderSound = new Audio('/assets/audio/thunder.wav');
-thunderSound.preload = 'auto';
+// Thunder sound (optional)
+let thunderSound = null;
+try {
+  thunderSound = new Audio('assets/audio/thunder.wav');
+  thunderSound.preload = 'auto';
+} catch (e) {
+  console.log('Thunder sound not loaded:', e);
+}
 
 // Utility
 function rand(n) {
@@ -78,8 +94,6 @@ class Flash {
   }
 }
 
-let activeFlashes = [];
-
 // Animation loop
 let lastTime = 0;
 const FRAME_INT = 1000 / 30;
@@ -91,10 +105,10 @@ function fade() {
 function spawnBolts() {
   if (activeBolts.length < MAX_ACTIVE_BOLTS && Math.random() < BOLT_CHANCE) {
     activeBolts.push(new Bolt());
-    if (thunderSound.paused) {
+    if (hasInteracted && thunderSound && thunderSound.paused) {
       thunderSound.playbackRate = 0.8 + Math.random() * 0.4;
       thunderSound.currentTime = 0;
-      thunderSound.play();
+      thunderSound.play().catch(e => console.log('Audio play failed:', e));
     }
   }
 }
@@ -142,23 +156,29 @@ function loop(time) {
   requestAnimationFrame(loop);
 }
 
-// Button click lightning flash
-document.getElementById('cta-button').addEventListener('click', (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  activeFlashes.push(new Flash(x, y));
-  if (thunderSound.paused) {
-    thunderSound.playbackRate = 0.8 + Math.random() * 0.4;
-    thunderSound.currentTime = 0;
-    thunderSound.play();
-  }
-});
+// Button click handler
+const ctaButton = document.getElementById('cta-button');
+if (ctaButton) {
+  ctaButton.addEventListener('click', (e) => {
+    hasInteracted = true; // Enable audio after interaction
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    activeFlashes.push(new Flash(x, y));
+    if (thunderSound && thunderSound.paused) {
+      thunderSound.playbackRate = 0.8 + Math.random() * 0.4;
+      thunderSound.currentTime = 0;
+      thunderSound.play().catch(e => console.log('Audio play failed:', e));
+    }
+  });
+} else {
+  console.warn('CTA button not found');
+}
 
 // Start animation
 requestAnimationFrame(loop);
 
-// Resize canvas on window resize
+// Handle window resize
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
